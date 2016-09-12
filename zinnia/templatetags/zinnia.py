@@ -20,7 +20,6 @@ from django.template.defaultfilters import stringfilter
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 
-from django_comments.models import CommentFlag
 from django_comments import get_model as get_comment_model
 
 from tagging.models import Tag
@@ -234,7 +233,6 @@ def get_recent_comments(number=5, template='zinnia/tags/comments_recent.html'):
     content_type = ContentType.objects.get_for_model(Entry)
 
     comments = get_comment_model().objects.filter(
-        Q(flags=None) | Q(flags__flag=CommentFlag.MODERATOR_APPROVAL),
         content_type=content_type, object_pk__in=entry_published_pks,
         is_public=True).order_by('-pk')[:number]
 
